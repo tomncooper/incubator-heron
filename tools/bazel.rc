@@ -75,6 +75,19 @@ build:ubuntu --python2_path /usr/bin/python2.7
 build:ubuntu --spawn_strategy=standalone
 build:ubuntu --workspace_status_command scripts/release/status.sh
 
+# For Arch Linux
+# To use it: bazel build --config=arch
+build:arch --experimental_action_listener=tools/cpp:compile_cpp
+build:arch --experimental_action_listener=tools/java:compile_java
+build:arch --experimental_action_listener=tools/python:compile_python
+build:arch --ignore_unsupported_sandboxing
+build:arch --genrule_strategy=standalone
+build:arch --spawn_strategy=standalone
+build:arch --python2_path /usr/bin/python2
+build:arch --linkopt -lm
+build:arch --linkopt -lpthread
+build:arch --linkopt -lrt
+build:arch --workspace_status_command scripts/release/status.sh
 
 ### Disabled checkstyle
 

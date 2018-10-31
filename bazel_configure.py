@@ -213,6 +213,23 @@ def discover_version(path):
     if version:
       return version
 
+  # on Arch, /usr/bin/gcc --version (among other commands) returns a line of
+  # the form:
+  # gcc (GCC) 7.1.1 20170516
+  arch_line = re.search('\(GCC\) (.*)\s+[0-9]+', first_line)
+  if arch_line:
+    version = get_trailing_version(arch_line.group(1))
+    if version:
+      return version
+
+  # on Arch, libtool --version returns a line of the form:
+  # libtool (GNU libtool) 2.4.5.40-6ca5
+  arch_line = re.search('\(GNU libtool\)(.*)+[0-9]+', first_line)
+  if arch_line:
+    version = get_trailing_version(arch_line.group(0).split("-")[0])
+    if version:
+      return version
+
 
   fail ("Could not determine the version of %s from the following output\n%s\n%s" % (path, command, version_output))
 
